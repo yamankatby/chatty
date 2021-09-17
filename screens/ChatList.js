@@ -43,14 +43,38 @@ const ChatList = () => {
     navigation.navigate("Chat");
   };
 
+  const [chats, setChats] = useState([]);
+  useEffect(() => {
+    return firebase
+      .firestore()
+      .collection("chats")
+      .where("users", "array-contains", email)
+      .onSnapshot((querySnapshot) => {
+        setChats(querySnapshot.docs);
+      });
+  }, [email]);
+
   return (
     <View style={{ flex: 1 }}>
-      <List.Item
-        title="User Name"
-        description="Hi, I will be waiting for you"
-        left={() => <Avatar.Text label="UN" size={56} />}
-      />
-      <Divider inset />
+      {chats.map((chat) => (
+        <React.Fragment>
+          <List.Item
+            title={chat.data().users.find((x) => x !== email)}
+            description="Hi, I will be waiting for you"
+            left={() => (
+              <Avatar.Text
+                label={chat
+                  .data()
+                  .users.find((x) => x !== email)
+                  .split(" ")
+                  .reduce((prev, current) => prev + current[0], "")}
+                size={56}
+              />
+            )}
+          />
+          <Divider inset />
+        </React.Fragment>
+      ))}
 
       <Portal>
         <Dialog
