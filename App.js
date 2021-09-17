@@ -9,6 +9,7 @@ import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { Provider } from "react-native-paper";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,16 +37,18 @@ const TabsNavigator = () => (
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Main"
-          component={TabsNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Chat" component={Chat} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-      </Stack.Navigator>
+      <Provider>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Main"
+            component={TabsNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Chat" component={Chat} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+        </Stack.Navigator>
+      </Provider>
     </NavigationContainer>
   );
 };
