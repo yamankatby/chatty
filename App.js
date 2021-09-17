@@ -1,21 +1,53 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ChatList from "./screens/ChatList";
+import Settings from "./screens/Settings";
+import Chat from "./screens/Chat";
+import SignUp from "./screens/SignUp";
+import SignIn from "./screens/SignIn";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const Tabs = createBottomTabNavigator();
+
+const TabsNavigator = () => (
+  <Tabs.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        return (
+          <Ionicons
+            name={route.name === "ChatList" ? "chatbubbles" : "settings"}
+            color={color}
+            size={size}
+          />
+        );
+      },
+    })}
+  >
+    <Tabs.Screen name="ChatList" component={ChatList} />
+    <Tabs.Screen name="Settings" component={Settings} />
+  </Tabs.Navigator>
+);
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          component={TabsNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
