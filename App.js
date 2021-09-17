@@ -9,7 +9,7 @@ import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Provider } from "react-native-paper";
+import { Provider, DefaultTheme } from "react-native-paper";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -59,10 +59,20 @@ const TabsNavigator = () => {
   );
 };
 
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#2196f3",
+    accent: "#e91e63",
+  },
+};
+
 const App = () => {
   return (
     <NavigationContainer>
-      <Provider>
+      <Provider theme={theme}>
         <Stack.Navigator>
           <Stack.Screen
             name="Main"

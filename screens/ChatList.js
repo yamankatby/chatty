@@ -32,7 +32,7 @@ const ChatList = () => {
   const createChat = async () => {
     if (!email || !userEmail) return;
     setIsLoading(true);
-    await firebase
+    const response = await firebase
       .firestore()
       .collection("chats")
       .add({
@@ -40,7 +40,7 @@ const ChatList = () => {
       });
     setIsLoading(false);
     setIsDialogVisible(false);
-    navigation.navigate("Chat");
+    navigation.navigate("Chat", { chatId: response.id });
   };
 
   const [chats, setChats] = useState([]);
@@ -60,7 +60,7 @@ const ChatList = () => {
         <React.Fragment>
           <List.Item
             title={chat.data().users.find((x) => x !== email)}
-            description="Hi, I will be waiting for you"
+            description={(chat.data().messages ?? [])[0]?.text ?? undefined}
             left={() => (
               <Avatar.Text
                 label={chat
@@ -71,6 +71,7 @@ const ChatList = () => {
                 size={56}
               />
             )}
+            onPress={() => navigation.navigate("Chat", { chatId: chat.id })}
           />
           <Divider inset />
         </React.Fragment>
